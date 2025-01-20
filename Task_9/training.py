@@ -11,14 +11,18 @@ import typing_extensions
 
 # Initialize command-line argument parser for hyperparameters
 parser = argparse.ArgumentParser()
-parser.add_argument("--learning_rate", type=float, default=0.0003)
-parser.add_argument("--batch_size", type=int, default=64)
-parser.add_argument("--n_steps", type=int, default=1000)  # 1000 steps per iteration
-parser.add_argument("--n_epochs", type=int, default=10)
+parser.add_argument("--learning_rate", type=float, default=0.0003)  # Updated learning rate
+parser.add_argument("--batch_size", type=int, default=32)  # Updated batch size
+parser.add_argument("--max_steps", type=int, default=1000)  # Updated n_steps
+parser.add_argument("--n_steps", type=int, default=2048)  # Updated n_steps
+parser.add_argument("--n_epochs", type=int, default=10)  # n_epochs remains the same
 parser.add_argument("--episodes", type=int, default=10)  # Total number of episodes
 parser.add_argument("--iterations_per_episode", type=int, default=20000)  # Iterations per episode
-parser.add_argument("--gamma", type=float, default=0.98)  # Discount factor
+parser.add_argument("--gamma", type=float, default=0.98)  # Updated gamma
 parser.add_argument("--ent_coef", type=float, default=0.02)  # Entropy coefficient for exploration
+parser.add_argument("--clip_range", type=float, default=0.15)  # Added clip_range
+parser.add_argument("--vf_coef", type=float, default=0.5)  # Added value_coefficient
+parser.add_argument("--policy", type=str, default="MlpPolicy")  # Policy type (MlpPolicy)
 args = parser.parse_args()
 
 os.environ["WANDB_API_KEY"] = "15e8594f3ad74a144d38b801c5d29665e723e549" 
@@ -28,10 +32,10 @@ wandb.login()  # This will prompt for a login if needed, using the credentials s
 wandb.init(project="sb3_custom_env", sync_tensorboard=True)
 
 # Set up the environment
-env = CustomEnv(render=False, max_steps=args.n_steps)  # Initialize the custom environment
+env = CustomEnv(render=False, max_steps=args.max_steps)  # Initialize the custom environment
 
 # Initialize ClearML task for remote training setup
-task = Task.init(project_name='Mentor Group M/Group 2', task_name='please_work')
+task = Task.init(project_name='Mentor Group M/Group 2', task_name='help')
 task.set_base_docker('deanis/2023y2b-rl:latest')  # Set docker image for remote training
 task.execute_remotely(queue_name="default")  # Set task to run remotely on ClearML's default queue
 
@@ -40,13 +44,15 @@ save_path = f"models/{wandb.run.id}"
 os.makedirs(save_path, exist_ok=True)
 
 model = PPO(
-    'MlpPolicy', env, verbose=1,
+    args.policy, env, verbose=1,
     learning_rate=args.learning_rate,
     batch_size=args.batch_size,
     n_steps=args.n_steps,
     n_epochs=args.n_epochs,
     gamma=args.gamma,  # Use gamma from command-line args
     ent_coef=args.ent_coef,  # Use entropy coefficient from command-line args
+    clip_range=args.clip_range,  # Added clip range for PPO
+    vf_coef=args.vf_coef,  # Added value function coefficient for PPO
     tensorboard_log=f"./runs/{wandb.run.id}/tensorboard/"
 )
 
