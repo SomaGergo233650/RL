@@ -31,7 +31,7 @@ wandb.init(project="sb3_custom_env", sync_tensorboard=True)
 env = CustomEnv(render=False, max_steps=args.n_steps)  # Initialize the custom environment
 
 # Initialize ClearML task for remote training setup
-task = Task.init(project_name='Mentor Group M/Group 2', task_name='Soma')
+task = Task.init(project_name='Mentor Group M/Group 2', task_name='please_work')
 task.set_base_docker('deanis/2023y2b-rl:latest')  # Set docker image for remote training
 task.execute_remotely(queue_name="default")  # Set task to run remotely on ClearML's default queue
 
