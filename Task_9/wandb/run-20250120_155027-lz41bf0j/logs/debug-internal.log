@@ -1,0 +1,19 @@
+{"time":"2025-01-20T15:50:27.9512447+01:00","level":"INFO","msg":"stream: starting","core version":"0.19.4","symlink path":"C:\\Users\\User\\Documents\\GitHub\\RL\\Task_9\\wandb\\run-20250120_155027-lz41bf0j\\logs\\debug-core.log"}
+{"time":"2025-01-20T15:50:28.0997897+01:00","level":"INFO","msg":"created new stream","id":"lz41bf0j"}
+{"time":"2025-01-20T15:50:28.0997897+01:00","level":"INFO","msg":"stream: started","id":"lz41bf0j"}
+{"time":"2025-01-20T15:50:28.0997897+01:00","level":"INFO","msg":"writer: Do: started","stream_id":"lz41bf0j"}
+{"time":"2025-01-20T15:50:28.0997897+01:00","level":"INFO","msg":"handler: started","stream_id":"lz41bf0j"}
+{"time":"2025-01-20T15:50:28.100386+01:00","level":"INFO","msg":"sender: started","stream_id":"lz41bf0j"}
+{"time":"2025-01-20T15:50:28.5779317+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-01-20T15:50:48.5790035+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:50:48.6078223+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
+{"time":"2025-01-20T15:50:58.5786189+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:50:58.5975499+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
+{"time":"2025-01-20T15:51:08.578955+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:51:08.6012459+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
+{"time":"2025-01-20T15:51:18.578334+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:51:18.6023353+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
+{"time":"2025-01-20T15:51:28.5784281+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:51:28.608553+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
+{"time":"2025-01-20T15:51:38.5785773+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
+{"time":"2025-01-20T15:51:38.5970654+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 11248"}
