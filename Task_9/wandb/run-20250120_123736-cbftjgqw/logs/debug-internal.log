@@ -1,9 +1,0 @@
-{"time":"2025-01-20T12:37:37.0976503+01:00","level":"INFO","msg":"stream: starting","core version":"0.19.3","symlink path":"C:\\Users\\User\\Documents\\GitHub\\RL\\Task_9\\wandb\\run-20250120_123736-cbftjgqw\\logs\\debug-core.log"}
-{"time":"2025-01-20T12:37:37.2361604+01:00","level":"INFO","msg":"created new stream","id":"cbftjgqw"}
-{"time":"2025-01-20T12:37:37.2367942+01:00","level":"INFO","msg":"stream: started","id":"cbftjgqw"}
-{"time":"2025-01-20T12:37:37.2367942+01:00","level":"INFO","msg":"writer: Do: started","stream_id":"cbftjgqw"}
-{"time":"2025-01-20T12:37:37.2367942+01:00","level":"INFO","msg":"sender: started","stream_id":"cbftjgqw"}
-{"time":"2025-01-20T12:37:37.2367942+01:00","level":"INFO","msg":"handler: started","stream_id":"cbftjgqw"}
-{"time":"2025-01-20T12:37:37.581835+01:00","level":"INFO","msg":"Starting system monitor"}
-{"time":"2025-01-20T12:37:57.5830301+01:00","level":"ERROR","msg":"monitor: memory: error sampling metrics: The parameter is incorrect."}
-{"time":"2025-01-20T12:37:57.6098273+01:00","level":"ERROR","msg":"monitor: cpu: error sampling metrics: could not get CreationDate: The parameter is incorrect.\ncouldn't find pid: 13444"}
