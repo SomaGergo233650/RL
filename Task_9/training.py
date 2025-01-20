@@ -7,6 +7,7 @@ from clearml import Task
 from env_V3_final_2 import CustomEnv  # Assuming CustomEnv is in this file
 from datetime import datetime
 import typing_extensions
+import tensorboard
 
 # Initialize command-line argument parser for hyperparameters
 parser = argparse.ArgumentParser()
