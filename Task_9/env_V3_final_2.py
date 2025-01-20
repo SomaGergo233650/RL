@@ -17,11 +17,16 @@ class CustomEnv(gym.Env):
         self.y_min, self.y_max = -0.1705, 0.2195
         self.z_min, self.z_max = 0.1195, 0.2895
 
+        # Add a small margin to handle precision issues
+        margin = 1e-4
+
         # Define action and observation spaces
         self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(3,), dtype=np.float32)
         self.observation_space = spaces.Box(
-            low=np.array([self.x_min, self.y_min, self.z_min, -self.x_max, -self.y_max, -self.z_max], dtype=np.float32),
-            high=np.array([self.x_max, self.y_max, self.z_max, self.x_max, self.y_max, self.z_max], dtype=np.float32),
+            low=np.array([self.x_min - margin, self.y_min - margin, self.z_min - margin, 
+                          -self.x_max - margin, -self.y_max - margin, -self.z_max - margin], dtype=np.float32),
+            high=np.array([self.x_max + margin, self.y_max + margin, self.z_max + margin, 
+                           self.x_max + margin, self.y_max + margin, self.z_max + margin], dtype=np.float32),
             dtype=np.float32
         )
         self.steps = 0
@@ -40,18 +45,36 @@ class CustomEnv(gym.Env):
         observation = self.sim.reset(num_agents=1)
         pipette_pos = self.sim.get_pipette_position(self.sim.robotIds[0])
 
+        # Combine pipette position and goal position into the observation
         observation = np.concatenate((pipette_pos, self.goal_pos), axis=0).astype(np.float32)
-        self.steps = 0
 
+        # Clamp observation to fit within bounds
+        observation = np.clip(observation, self.observation_space.low, self.observation_space.high)
+
+        # Debugging logs
+        print(f"Reset Observation: {observation}")
+        print(f"Bounds: Low = {self.observation_space.low}, High = {self.observation_space.high}")
+
+        self.steps = 0
         return observation, {}
 
     def step(self, action):
         self.steps += 1
-        action = np.append(action, 0)
+        action = np.append(action, 0)  # Append zero for compatibility with the simulation
 
+        # Get simulation result
         observation = self.sim.run([action])
         pipette_pos = self.sim.get_pipette_position(self.sim.robotIds[0])
+
+        # Combine pipette position and goal position into the observation
         observation = np.concatenate((pipette_pos, self.goal_pos), axis=0).astype(np.float32)
+
+        # Clamp observation to fit within bounds
+        observation = np.clip(observation, self.observation_space.low, self.observation_space.high)
+
+        # Debugging logs
+        print(f"Step Observation: {observation}")
+        print(f"Bounds: Low = {self.observation_space.low}, High = {self.observation_space.high}")
 
         # Calculate reward
         distance = np.linalg.norm(pipette_pos - self.goal_pos)
@@ -60,12 +83,14 @@ class CustomEnv(gym.Env):
         if distance <= 0.01:
             reward += 50  # High reward for successful termination
 
+        # Check if the episode is terminated
         terminated = distance <= 0.01
         truncated = self.steps >= self.max_steps
 
         return observation, reward, terminated, truncated, {}
 
     def render(self, mode='human'):
+        # Optional rendering function
         pass
 
     def close(self):

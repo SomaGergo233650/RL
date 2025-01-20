@@ -1,0 +1,15 @@
+{"time":"2025-01-20T15:52:24.9225311+01:00","level":"INFO","msg":"stream: starting","core version":"0.19.4","symlink path":"C:\\Users\\User\\Documents\\GitHub\\RL\\Task_9\\wandb\\run-20250120_155224-nekoonpm\\logs\\debug-core.log"}
+{"time":"2025-01-20T15:52:25.073987+01:00","level":"INFO","msg":"created new stream","id":"nekoonpm"}
+{"time":"2025-01-20T15:52:25.073987+01:00","level":"INFO","msg":"stream: started","id":"nekoonpm"}
+{"time":"2025-01-20T15:52:25.073987+01:00","level":"INFO","msg":"writer: Do: started","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:25.073987+01:00","level":"INFO","msg":"sender: started","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:25.073987+01:00","level":"INFO","msg":"handler: started","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:25.5171232+01:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-01-20T15:52:26.18977+01:00","level":"INFO","msg":"stream: closing","id":"nekoonpm"}
+{"time":"2025-01-20T15:52:26.18977+01:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-01-20T15:52:26.1909315+01:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-01-20T15:52:26.9699054+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-01-20T15:52:27.1956046+01:00","level":"INFO","msg":"handler: closed","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:27.1956046+01:00","level":"INFO","msg":"writer: Close: closed","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:27.1956046+01:00","level":"INFO","msg":"sender: closed","stream_id":"nekoonpm"}
+{"time":"2025-01-20T15:52:27.1961944+01:00","level":"INFO","msg":"stream: closed","id":"nekoonpm"}

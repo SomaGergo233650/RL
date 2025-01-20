@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\User\Documents\GitHub\RL\Task_9\train_10.py", line 36, in <module>
+    check_env(env)  # Validate the custom environment
+  File "C:\Users\User\anaconda3\envs\robotics_env\lib\site-packages\stable_baselines3\common\env_checker.py", line 481, in check_env
+    _check_returned_values(env, observation_space, action_space)
+  File "C:\Users\User\anaconda3\envs\robotics_env\lib\site-packages\stable_baselines3\common\env_checker.py", line 345, in _check_returned_values
+    _check_obs(obs, observation_space, "step")
+  File "C:\Users\User\anaconda3\envs\robotics_env\lib\site-packages\stable_baselines3\common\env_checker.py", line 250, in _check_obs
+    raise AssertionError(message)
+AssertionError: The observation returned by the `step()` method does not match the bounds of the given observation space Box([-0.187  -0.1705  0.1195 -0.2531 -0.2195 -0.2895], [0.2531 0.2195 0.2895 0.2531 0.2195 0.2895], (6,), float32).
+1 invalid indices:
+Expected: 0.11949999630451202 <= obs[2] <= 0.28949999809265137, actual value: 0.11949906498193741
