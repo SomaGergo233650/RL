@@ -4,7 +4,7 @@ import numpy as np
 from sim_class import Simulation
 
 class CustomEnv(gym.Env):
-    def __init__(self, render=False, max_steps=5000000):
+    def __init__(self, render=False, max_steps=1000):
         super(CustomEnv, self).__init__()
         self.render = render
         self.max_steps = max_steps
@@ -24,7 +24,6 @@ class CustomEnv(gym.Env):
             high=np.array([self.x_max, self.y_max, self.z_max, self.x_max, self.y_max, self.z_max], dtype=np.float32),
             dtype=np.float32
         )
-        
         self.steps = 0
 
     def reset(self, seed=None):
@@ -37,39 +36,34 @@ class CustomEnv(gym.Env):
         z = np.random.uniform(self.z_min, self.z_max)
         self.goal_pos = np.array([x, y, z], dtype=np.float32)
 
-        # Reset the simulation and get initial pipette position
+        # Reset simulation and get pipette position
         observation = self.sim.reset(num_agents=1)
         pipette_pos = self.sim.get_pipette_position(self.sim.robotIds[0])
 
-        # Combine pipette position and goal position
         observation = np.concatenate((pipette_pos, self.goal_pos), axis=0).astype(np.float32)
         self.steps = 0
-        
-        info = {}
-        return observation, info
+
+        return observation, {}
 
     def step(self, action):
         self.steps += 1
-        action = np.append(np.array(action, dtype=np.float32), 0)
+        action = np.append(action, 0)
 
-        # Run simulation step
         observation = self.sim.run([action])
         pipette_pos = self.sim.get_pipette_position(self.sim.robotIds[0])
         observation = np.concatenate((pipette_pos, self.goal_pos), axis=0).astype(np.float32)
-        
+
         # Calculate reward
         distance = np.linalg.norm(pipette_pos - self.goal_pos)
-        reward = -distance
-        reward -= 0.01 * self.steps
+        reward = -10 * distance  # Penalize distance more aggressively
+        reward -= 0.01 * self.steps  # Penalize longer episodes
+        if distance <= 0.01:
+            reward += 50  # High reward for successful termination
 
-        terminated = distance <= 0.001
-        if terminated:
-            reward += 10
-
+        terminated = distance <= 0.01
         truncated = self.steps >= self.max_steps
-        
-        info = {}
-        return observation, reward, terminated, truncated, info
+
+        return observation, reward, terminated, truncated, {}
 
     def render(self, mode='human'):
         pass
