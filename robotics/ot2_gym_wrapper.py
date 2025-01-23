@@ -31,45 +31,43 @@ class OT2Env(gym.Env):
         if seed is not None:
             np.random.seed(seed)
         
-        # Reset simulation
+        # Reset the simulation environment
         observation = self.sim.reset(num_agents=1)
         robot_id = next(iter(observation))  
         self.state = np.array(observation[robot_id]['pipette_position'], dtype=np.float32)
-
-        # Randomize goal position within work envelope
-        self.goal_position = np.random.uniform([-0.2, -0.2, -0.2], [0.2, 0.2, 0.2])
-
+    
+        # Randomize the goal position each time the environment is reset
+        self.goal_position = np.random.uniform([-0.2, -0.2, -0.2], [0.2, 0.2, 0.2])  # New random goal position
+        
         # Append goal position to the state
         observation = np.concatenate([self.state, self.goal_position])
-
+    
         self.steps = 0
-
-        return observation, {}
-
-
+        return observation
 
     def step(self, action):
-        # Add "drop action" as needed
-        action = np.append(action, 0)
+        # Proceed with the usual step functionality
+        action = np.append(action, 0)  # Adding 0 for drop action
         observation = self.sim.run([action])
 
         robot_id = next(iter(observation))  
         self.state = np.array(observation[robot_id]['pipette_position'], dtype=np.float32)
+        
         observation = np.concatenate([self.state, self.goal_position])
 
-        # Compute reward
+        # Compute reward based on the current position
         reward = self._compute_reward()
 
-        # Termination criteria
+        # Goal detection: Terminate when within a threshold distance
         distance_to_goal = np.linalg.norm(self.state[:3] - self.goal_position)
-        terminated = distance_to_goal < 0.001  # Terminate if within 1 mm precision
+        terminated = distance_to_goal < 0.02 
+
         truncated = self.steps >= self.max_steps
-        info = {"distance_to_goal": distance_to_goal}
+        info = {}
 
         self.steps += 1
 
         return observation, reward, terminated, truncated, info
-
 
     def render(self, mode='human'):
         # Check if the render flag is True before attempting to render
@@ -82,21 +80,14 @@ class OT2Env(gym.Env):
     def _compute_reward(self):
         pipette_position = np.array(self.state[:3])
         distance_to_goal = np.linalg.norm(pipette_position - self.goal_position)
-
-        # Rewards for accuracy
-        if distance_to_goal < 0.001:  # 1 mm
-            reward = 100  # Highly precise bonus
-        elif distance_to_goal < 0.01:  # 10 mm
-            reward = 50  # Medium precision bonus
-        else:
-            reward = -distance_to_goal  # Penalize based on distance
-
-        # Penalty for steps
-        step_penalty = -0.01
-
-        # Strong penalty for leaving the workspace (work envelope)
-        out_of_bounds_penalty = -5.0 if not np.all((pipette_position >= -1) & (pipette_position <= 1)) else 0.0
-
-        # Combine rewards and penalties
-        return reward + step_penalty + out_of_bounds_penalty
-
+        
+        # More linear reward
+        progress_reward = 1 - (distance_to_goal / np.max(self.observation_space.high[:3] - self.observation_space.low[:3]))
+        
+        # Less harsh step penalty
+        step_penalty = -0.005
+        
+        # Bonus for getting very close to the goal
+        goal_proximity_bonus = 1.0 if distance_to_goal < 0.05 else 0.0
+        
+        return progress_reward + step_penalty + goal_proximity_bonus

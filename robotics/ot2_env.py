@@ -8,7 +8,7 @@ class OT2Env(gym.Env):
         super(OT2Env, self).__init__()
         self.render = render
         self.max_steps = max_steps
-        
+
         # Create the simulation environment, passing the render flag
         self.sim = Simulation(num_agents=1, render=render)
 
@@ -18,14 +18,26 @@ class OT2Env(gym.Env):
             high=np.array([1.0, 1.0, 1.0], dtype=np.float32),   # x, y, z velocities
             dtype=np.float32
         )
+
+        # Observation space includes coordinates of the operational envelope
         self.observation_space = spaces.Box(
-            low=np.array([-1, -1, -1, -1, -1, -1], dtype=np.float32),  # Observation space can be larger to accommodate the full 3D space
-            high=np.array([1, 1, 1, 1, 1, 1], dtype=np.float32),
+            low=np.array([-0.18700, -0.17050, 0.16950, -0.18700, -0.17050, 0.16950], dtype=np.float32),
+            high=np.array([0.25300, 0.21950, 0.28950, 0.25300, 0.21950, 0.28950], dtype=np.float32),
             dtype=np.float32
         )
 
+        # Initialize steps and goal position
         self.steps = 0
-        self.goal_position = np.array([0.5, 0.5, 0.2])
+        self.goal_position = np.array([
+            [-0.18700, 0.21950, 0.16950],  # Right Front Bottom
+            [0.25300, -0.17050, 0.16940],  # Right Front Top
+            [0.25300, -0.17050, 0.28950],  # Left Front Top
+            [-0.18700, 0.21950, 0.28950],  # Left Front Bottom
+            [-0.18700, -0.17050, 0.16950],  # Left Back Bottom
+            [0.25300, 0.21950, 0.16950],   # Left Back Top
+            [0.25300, 0.21950, 0.28950],   # Right Back Top
+            [-0.18700, -0.17050, 0.28950]  # Right Back Bottom
+        ])
 
     def reset(self, seed=None):
         if seed is not None:
