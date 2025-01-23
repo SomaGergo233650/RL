@@ -48,7 +48,6 @@ This process ensures accurate and consistent agent movement within the simulated
 - User-friendly script to initialize and run the simulation.
 
 ## Repository Link
-[Y2B-2023-OT2_Twin Repository](<repository-link>)
+[Y2B-2023-OT2_Twin Repository](<https://github.com/BredaUniversityADSAI/Y2B-2023-OT2_Twin.git>)
 
-## Support
-If you encounter any issues or have questions about setting up or running the simulation, feel free to reach out to the repository maintainer or create an issue in the repository.
+
