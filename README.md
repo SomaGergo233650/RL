@@ -51,3 +51,6 @@ This process ensures accurate and consistent agent movement within the simulated
 [Y2B-2023-OT2_Twin Repository](<https://github.com/BredaUniversityADSAI/Y2B-2023-OT2_Twin.git>)
 
 
+## Best training Parameters:
+python training.py --learning_rate 0.0001 --batch_size 32 --n_steps 2048 --n_epochs 10 --gamma 0.98 --policy MlpPolicy --clip_range 0.15 --value_coefficient 0.5
+
