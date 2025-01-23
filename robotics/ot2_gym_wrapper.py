@@ -19,31 +19,58 @@ class OT2Env(gym.Env):
             dtype=np.float32
         )
         self.observation_space = spaces.Box(
-            low=np.array([-1, -1, -1, -1, -1, -1], dtype=np.float32),  # Observation space can be larger to accommodate the full 3D space
+            low=np.array([-1, -1, -1, -1, -1, -1], dtype=np.float32),
             high=np.array([1, 1, 1, 1, 1, 1], dtype=np.float32),
             dtype=np.float32
         )
 
         self.steps = 0
-        self.goal_position = np.array([0.5, 0.5, 0.2])
+
+        # Define the cube boundaries based on provided coordinates
+        self.bounds = {
+            "x_min": -0.18700662642653432,
+            "x_max": 0.2530890387697392,
+            "y_min": -0.170609364469082,
+            "y_max": 0.21950138703355168,
+            "z_min": 0.16949820263744853,
+            "z_max": 0.28952088202505344,
+        }
+
+        # Set an initial goal position
+        self.goal_position = self._randomize_goal_position()
+
+    def _randomize_goal_position(self):
+        # Randomly generate a goal position within the defined boundaries
+        return np.array([
+            np.random.uniform(self.bounds["x_min"], self.bounds["x_max"]),
+            np.random.uniform(self.bounds["y_min"], self.bounds["y_max"]),
+            np.random.uniform(self.bounds["z_min"], self.bounds["z_max"]),
+        ], dtype=np.float32)
 
     def reset(self, seed=None):
         if seed is not None:
             np.random.seed(seed)
-        
+
         # Reset the simulation environment
         observation = self.sim.reset(num_agents=1)
-        robot_id = next(iter(observation))  
+
+        # Check if the output is valid
+        if not isinstance(observation, dict) or len(observation) == 0:
+            raise ValueError("Unexpected output from self.sim.reset():", observation)
+
+        robot_id = next(iter(observation))
         self.state = np.array(observation[robot_id]['pipette_position'], dtype=np.float32)
-    
+
         # Randomize the goal position each time the environment is reset
-        self.goal_position = np.random.uniform([-0.2, -0.2, -0.2], [0.2, 0.2, 0.2])  # New random goal position
-        
+        self.goal_position = self._randomize_goal_position()
+
         # Append goal position to the state
         observation = np.concatenate([self.state, self.goal_position])
-    
+
         self.steps = 0
-        return observation
+
+        # Return observation and an empty info dictionary
+        return observation, {}
 
     def step(self, action):
         # Proceed with the usual step functionality
@@ -70,9 +97,8 @@ class OT2Env(gym.Env):
         return observation, reward, terminated, truncated, info
 
     def render(self, mode='human'):
-        # Check if the render flag is True before attempting to render
         if self.render:
-            self.sim.render(mode)  # Assuming the Simulation class has a render method
+            self.sim.render(mode)
 
     def close(self):
         self.sim.close()
@@ -82,7 +108,11 @@ class OT2Env(gym.Env):
         distance_to_goal = np.linalg.norm(pipette_position - self.goal_position)
         
         # More linear reward
-        progress_reward = 1 - (distance_to_goal / np.max(self.observation_space.high[:3] - self.observation_space.low[:3]))
+        progress_reward = 1 - (distance_to_goal / np.linalg.norm([
+            self.bounds["x_max"] - self.bounds["x_min"],
+            self.bounds["y_max"] - self.bounds["y_min"],
+            self.bounds["z_max"] - self.bounds["z_min"],
+        ]))
         
         # Less harsh step penalty
         step_penalty = -0.005

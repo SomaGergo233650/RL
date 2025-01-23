@@ -1,37 +1,42 @@
 import gymnasium as gym
 import numpy as np
-from new_ot2_gym_wrapper import CustomEnv  
+from ot2_gym_wrapper import CustomEnv
 
-def main():
-    # Initialize the custom environment
-    env = CustomEnv(render=False, max_steps=1000)
+def run_episode():
+    """Run a single episode in the custom environment."""
+    # Create the environment instance
+    environment = CustomEnv(render=False, max_steps=1000)
 
-    # Run the environment for a single episode
-    observation, info = env.reset()
-    total_reward = 0
+    # Initialize the environment
+    state, metadata = environment.reset()
+    cumulative_reward = 0
 
-    for step in range(1000):
-        # Sample a random action from the action space
-        action = env.action_space.sample()
+    for step_count in range(1000):
+        # Select an action randomly from the action space
+        chosen_action = environment.action_space.sample()
 
-        # Take a step in the environment
-        observation, reward, terminated, truncated, info = env.step(action)
+        # Execute the action and observe the result
+        next_state, step_reward, done, truncated, additional_info = environment.step(chosen_action)
 
-        # Accumulate reward
-        total_reward += reward
+        # Update the total reward
+        cumulative_reward += step_reward
 
-        # Print the step details
-        print(f"Step {step + 1}: Action = {action}, Observation = {observation}, Reward = {reward}")
+        # Log the details of the current step
+        print(f"Step {step_count + 1}: Action Taken = {chosen_action}, Next State = {next_state}, Reward Gained = {step_reward}")
 
-        # Check if the episode is over
-        if terminated or truncated:
-            print("Episode ended.")
+        # Exit the loop if the episode is completed
+        if done or truncated:
+            print("The episode has concluded.")
             break
 
-    print(f"Total Reward: {total_reward}")
+    print(f"Cumulative Reward for the Episode: {cumulative_reward}")
 
-    # Close the environment
-    env.close()
+    # Release resources used by the environment
+    environment.close()
+
+def main():
+    """Main function to execute the episode."""
+    run_episode()
 
 if __name__ == "__main__":
     main()
