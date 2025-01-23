@@ -1,0 +1,49 @@
+{
+  "os": "Windows-10-10.0.26100-SP0",
+  "python": "CPython 3.9.21",
+  "startedAt": "2025-01-20T15:01:43.987856Z",
+  "args": [
+    "--learning_rate",
+    "0.0003",
+    "--batch_size",
+    "64",
+    "--n_steps",
+    "2048",
+    "--n_epochs",
+    "10",
+    "--gamma",
+    "0.99",
+    "--policy",
+    "MlpPolicy",
+    "--clip_range",
+    "0.2",
+    "--value_coefficient",
+    "0.5"
+  ],
+  "program": "C:\\Users\\User\\Documents\\GitHub\\RL\\Task_9\\train_10.py",
+  "codePath": "Task_9\\train_10.py",
+  "git": {
+    "remote": "https://github.com/SomaGergo233650/RL.git",
+    "commit": "0747a04e358c78a00df5451426a68c538f015f11"
+  },
+  "email": "233650@buas.nl",
+  "root": "C:\\Users\\User\\Documents\\GitHub\\RL\\Task_9",
+  "host": "DESKTOP-T9KC9A6",
+  "executable": "C:\\Users\\User\\anaconda3\\envs\\robotics_env\\python.exe",
+  "codePathLocal": "train_10.py",
+  "cpu_count": 4,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "499241709568",
+      "used": "365148991488"
+    }
+  },
+  "memory": {
+    "total": "17011023872"
+  },
+  "cpu": {
+    "count": 4,
+    "countLogical": 8
+  }
+}
